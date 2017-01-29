@@ -28,8 +28,9 @@ app.set('view engine', 'ejs');
 app.get('/', function(req, res) {
     log.info(req.secure);
     var protocol = nodeEnv=='production' ? 'https' : 'http';
+    var secure = nodeEnv=='production' ? true : false;
 
-    res.render(__dirname + '/templates/index.ejs', { port: port, protocol: protocol});
+    res.render(__dirname + '/templates/index.ejs', { port: port, protocol: protocol, secure:secure});
 });
 
 app.get('/jquery.min.js', function(req, res) {
