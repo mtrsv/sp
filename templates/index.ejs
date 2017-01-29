@@ -2,7 +2,7 @@
 <script src="jquery.min.js"></script>
 
 <script>
-    var socket = io.connect('<%= serverUrl %>', {secure: <%= secure %>});
+    var socket = io.connect('/', {secure: <%= secure %>});
     socket.on('news', function (data) {
         console.log(data);
         addData(data.text);
