@@ -12,6 +12,7 @@ log.info = console.log;
 
 
 var port = process.env.PORT || 3000;
+var nodeEnv = process.env.NODE_ENV;
 
 var app = express();
 var server = require('http').createServer(app);
@@ -26,7 +27,7 @@ app.set('view engine', 'ejs');
 
 app.get('/', function(req, res) {
     log.info(req.secure);
-    var protocol = req.secure ? 'https' : 'http';
+    var protocol = nodeEnv=='production' ? 'https' : 'http';
 
     res.render(__dirname + '/templates/index.ejs', { port: port, protocol: protocol});
 });
