@@ -25,8 +25,10 @@ app.use(morgan(':date[web] :remote-addr :remote-user :url :status', {stream: acc
 app.set('view engine', 'ejs');
 
 app.get('/', function(req, res) {
-    // res.send('Test');
-    res.render(__dirname + '/templates/index.ejs', { port: port });
+    log.info(req.secure);
+    var protocol = req.secure ? 'https' : 'http';
+
+    res.render(__dirname + '/templates/index.ejs', { port: port, protocol: protocol});
 });
 
 app.get('/jquery.min.js', function(req, res) {
