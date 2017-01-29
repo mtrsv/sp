@@ -13,6 +13,11 @@ log.info = console.log;
 
 var port = process.env.PORT || 3000;
 var nodeEnv = process.env.NODE_ENV;
+var nodeServerUrl = process.env.NODE_SERVER_URL;
+
+var protocol = nodeEnv=='production' ? 'https' : 'http';
+var serverUrl = protocol + '://' + nodeServerUrl + ':' + port;
+var secure = nodeEnv=='production' ? true : false;
 
 var app = express();
 var server = require('http').createServer(app);
@@ -26,11 +31,7 @@ app.use(morgan(':date[web] :remote-addr :remote-user :url :status', {stream: acc
 app.set('view engine', 'ejs');
 
 app.get('/', function(req, res) {
-    log.info(req.secure);
-    var protocol = nodeEnv=='production' ? 'https' : 'http';
-    var secure = nodeEnv=='production' ? true : false;
-
-    res.render(__dirname + '/templates/index.ejs', { port: port, protocol: protocol, secure:secure});
+    res.render(__dirname + '/templates/index.ejs', { serverUrl:serverUrl, secure:secure});
 });
 
 app.get('/jquery.min.js', function(req, res) {
@@ -46,5 +47,5 @@ socketIO.on('connection', function (socket) {
 });
 
 server.listen(port, function(){
-    log.info('Express server listening on port ' + port);
+    log.info('Express server listening on ' + serverUrl);
 });
