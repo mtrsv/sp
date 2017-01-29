@@ -3,6 +3,7 @@ var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var ejs = require('ejs');
 var fs = require('fs');
 
 
@@ -10,7 +11,7 @@ var log = {};
 log.info = console.log;
 
 
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 3000;
 
 var app = express();
 var server = require('http').createServer(app);
@@ -21,12 +22,13 @@ app.use(bodyParser());
 app.use(cookieParser());
 var accessLogStream = fs.createWriteStream(__dirname + '/access.log', {flags: 'a'});
 app.use(morgan(':date[web] :remote-addr :remote-user :url :status', {stream: accessLogStream}));
-
+app.set('view engine', 'ejs');
 
 app.get('/', function(req, res) {
     // res.send('Test');
-    res.sendFile(__dirname + '/templates/index.html');
+    res.render(__dirname + '/templates/index.ejs', { port: port });
 });
+
 app.get('/jquery.min.js', function(req, res) {
     res.sendFile(__dirname + '/node_modules/jquery/dist/jquery.min.js');
 });
